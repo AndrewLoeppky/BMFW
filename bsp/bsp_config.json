@@ -1,0 +1,47 @@
+{
+    "locations": {
+        "coopers": {
+            "longitude":-118.986010,
+            "latitude":50.285681
+            },
+        "revelstoke": {
+            "longitude":-118.092554,
+            "latitude":50.959530
+            }
+    },
+    "variables": {
+        "TCDC": "Sfc",
+        "HPBL": "Sfc",
+        "PRATE": "Sfc",
+        "PRES": "Sfc",
+        "ORGPHY": "Sfc",
+        "HGT": "ISBL",
+        "TMP": "ISBL",
+        "WIND": "ISBL",
+        "WDIR": "ISBL"
+    },
+    "levels": {
+        "ISBL": [
+            "ISBL_0550",           
+            "ISBL_0600",           
+            "ISBL_0650",
+            "ISBL_0700",           
+            "ISBL_0750",
+            "ISBL_0800",
+            "ISBL_0850",
+            "ISBL_0875",
+            "ISBL_0900",
+            "ISBL_0925",
+            "ISBL_0950",
+            "ISBL_0970",
+            "ISBL_0985",
+            "ISBL_1015"
+        ],
+        "AGL": [
+            "AGL-10m"
+        ],
+        "Sfc": [
+            "Sfc"
+        ]
+    }
+}
