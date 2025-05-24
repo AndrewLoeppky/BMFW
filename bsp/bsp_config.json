@@ -12,9 +12,7 @@
     "variables": {
         "TCDC": "Sfc",
         "HPBL": "Sfc",
-        "PRATE": "Sfc",
         "PRES": "Sfc",
-        "ORGPHY": "Sfc",
         "HGT": "ISBL",
         "TMP": "ISBL",
         "WIND": "ISBL",
