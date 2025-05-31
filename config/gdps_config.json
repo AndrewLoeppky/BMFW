@@ -1,7 +1,7 @@
 {
       "data":
         {
-              "data_dir": "//Users//andrew//data//gdps//"
+              "gdps_data": "//Users//andrew//data//gdps//"
         },
       "plots":
         {
@@ -10,7 +10,7 @@
               "temp1504": "//Users//andrew//Repos//BMWF//outputs//Temperatures//1500m 0400//",
               "temp1516": "//Users//andrew//Repos//BMWF//outputs//Temperatures//1500m 1600//",
               "surf": "//Users//andrew//Repos//BMWF//outputs//Surface Maps//0-144 Hours//",
-              "mbar500": "//Users//andrew//Repos//BMWF//outputs//500 mbar & Precipitable Water//500 mbar//",
+              "500mb": "//Users//andrew//Repos//BMWF//outputs//500 mbar & Precipitable Water//500 mbar//",
               "pwat": "//Users//andrew//Repos//BMWF//outputs//500 mbar & Precipitable Water//Precipitable Water//"
         }
 }
