@@ -1,0 +1,18 @@
+{
+      "data":
+        {
+              "hrdps_data": "//Users//andrew//data//hrdps//"
+        },
+      "plots":
+        {
+              "hpcp_bcab": "//Users//andrew//Repos//BMWF//outputs//Hourly Precipitation//BC-AB//",
+              "hpcp_rockies": "//Users//andrew//Repos//BMWF//outputs//Hourly Precipitation//Alberta Rockies//",
+              "hpcp_southcoast": "//Users//andrew//Repos//BMWF//outputs//Hourly Precipitation//South Coast//",
+              "hpcp_southint": "//Users//andrew//Repos//BMWF//outputs//Hourly Precipitation//South Interior//",
+              "hpcp_ptype": "//Users//andrew//Repos//BMWF//outputs//Hourly Precipitation//Precipitation Type//",
+              "12hpcp_rockies": "//Users//andrew//Repos//BMWF//outputs//12hr Total Precipitation//Alberta Rockies//",
+              "12hpcp_southcoast": "//Users//andrew//Repos//BMWF//outputs//12hr Total Precipitation//South Coast//",
+              "12hpcp_southint": "//Users//andrew//Repos//BMWF//outputs//12hr Total Precipitation//South Interior//",
+              "surf_temp": "//Users//andrew//Repos//BMWF//outputs//Temperatures//Surface//"           
+        }
+}
