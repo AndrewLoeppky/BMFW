@@ -105,3 +105,71 @@ def make_basemap(ax):
 
     return None
 
+
+def make_title(fig, ax, ds, title, offset=0):
+    """
+    Creates title, date, model run, shaded regions of plot.
+    offset shifts position of model run (eg 00 Z) left or right.
+    """
+    # shade out top and left regions
+    ax.add_patch(
+        Rectangle(
+            (0, 0),
+            0.12,
+            0.85,
+            transform=ax.transAxes,
+            color="steelblue",
+            alpha=0.8,
+        )
+    )
+    ax.add_patch(
+        Rectangle((0, 0.85), 1, 1, transform=ax.transAxes, color="steelblue", alpha=0.8)
+    )
+
+    # title
+    fig.text(
+        0.403,
+        0.808,
+        title,
+        color="black",
+        size=20,
+        ha="center",
+        va="center",
+    )
+    fig.text(
+        0.4,
+        0.81,
+        title,
+        color="white",
+        size=20,
+        ha="center",
+        va="center",
+    )
+
+    # timestamps
+    the_date = (
+        pd.Timestamp(ds.valid_time.values).tz_localize("UTC").tz_convert("America/Vancouver")
+    )
+    fmt_date = the_date.strftime("%a. %d %b. %y \n%H:%M %p %Z")
+    fig.text(0.602, 0.808, fmt_date, color="black", size=20, ha="center", va="center")
+    fig.text(0.6, 0.81, fmt_date, color="white", size=20, ha="center", va="center")
+
+    # model run identifier in bottom left
+    fig.text(
+        0.101 + offset,
+        0.159,
+        f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
+        color="black",
+        size=10,
+    )
+
+    fig.text(
+        0.1 + offset,
+        0.16,
+        f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
+        color="white",
+        size=10,
+    )
+
+    return None
+
