@@ -61,6 +61,28 @@ def get_var(run, model, fxx, var, lev):
     return ds
 
 
+def make_figure():
+    """
+    Generates a figure using cartopy. Requires
+    set_extent([lonmin, lonmax, latmin, latmax])
+    to keep figure size reasonable
+    """
+    fig = plt.figure(figsize=(15, 15))
+    fig.tight_layout()
+    ax = fig.add_subplot(
+        1,
+        1,
+        1,
+        position=(0, 0, 1, 1),
+        projection=ccrs.LambertConformal(
+            central_longitude=-123,
+            central_latitude=54.0,
+        ),
+    )
+
+    return fig, ax
+
+
 def plot_cities(ax):
     """
     plots and labels cities on map based on JSON file path input
@@ -87,6 +109,7 @@ def plot_cities(ax):
             va="bottom",
             alpha=0.7,
             color="white",
+            weight="light",
         )
 
     return None
