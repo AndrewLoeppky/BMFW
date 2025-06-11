@@ -57,6 +57,14 @@ def get_var(run, model, fxx, var, lev):
     # if the variable name is unknown, assign it
     if "unknown" in ds:
         ds = ds.rename({"unknown": var})
+        
+    # slice out only the domain we care about
+    if model == "gdps":
+        ds = ds.sel(longitude=slice(-195, -97), latitude=slice(30, 73))
+    elif model == "rdps":
+        ds = ds.sel(x=slice(220, 480), y=slice(200, 500))
+    elif model == "hrdps":
+        ds = ds.sel(x=slice(0, 800), y=slice(100, 1100))
 
     return ds
 
