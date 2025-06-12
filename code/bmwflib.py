@@ -189,7 +189,7 @@ def make_title(fig, ax, ds, title, offset=0):
     # model run identifier in bottom left
     fig.text(
         0.101 + offset,
-        0.129,
+        0.149,
         f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
         color="black",
         size=12,
@@ -197,7 +197,7 @@ def make_title(fig, ax, ds, title, offset=0):
 
     fig.text(
         0.1 + offset,
-        0.13,
+        0.15,
         f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
         color="white",
         size=12,
