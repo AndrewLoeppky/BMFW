@@ -64,7 +64,7 @@ def get_var(run, model, fxx, var, lev):
     elif model == "rdps":
         ds = ds.sel(x=slice(220, 500), y=slice(200, 520))
     elif model == "hrdps":
-        ds = ds.sel(x=slice(0, 850), y=slice(100, 1150))
+        ds = ds.sel(x=slice(0, 900), y=slice(100, 1150))
 
     return ds
 
@@ -115,9 +115,10 @@ def plot_cities(ax):
             transform=ccrs.PlateCarree(),
             ha="center",
             va="bottom",
-            alpha=0.7,
+            alpha=0.8,
             color="white",
             weight="light",
+            size=12
         )
 
     return None
@@ -182,24 +183,24 @@ def make_title(fig, ax, ds, title, offset=0):
         pd.Timestamp(ds.valid_time.values).tz_localize("UTC").tz_convert("America/Vancouver")
     )
     fmt_date = the_date.strftime("%a. %d %b. %y \n%H:%M %p %Z")
-    fig.text(0.602, 0.808, fmt_date, color="black", size=20, ha="center", va="center")
+    fig.text(0.603, 0.808, fmt_date, color="black", size=20, ha="center", va="center")
     fig.text(0.6, 0.81, fmt_date, color="white", size=20, ha="center", va="center")
 
     # model run identifier in bottom left
     fig.text(
         0.101 + offset,
-        0.159,
+        0.129,
         f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
         color="black",
-        size=10,
+        size=12,
     )
 
     fig.text(
         0.1 + offset,
-        0.16,
+        0.13,
         f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
         color="white",
-        size=10,
+        size=12,
     )
 
     return None
