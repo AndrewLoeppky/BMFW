@@ -41,6 +41,12 @@ def clear_directory(path):
             os.remove(full_path)
     return None
 
+def find_pressure_centres(ds):
+    """
+    placeholder function to find high and low pressure centres
+    """
+    return None
+
 
 def get_var(run, model, fxx, var, lev):
     """
@@ -190,8 +196,8 @@ def make_title(fig, ax, ds, title, offset=0):
 
     # model run identifier in bottom left
     fig.text(
-        0.061,
-        0.014,
+        0.062,
+        0.013,
         f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
         color="black",
         size=12,
