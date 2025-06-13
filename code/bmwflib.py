@@ -148,34 +148,36 @@ def make_title(fig, ax, ds, title, offset=0):
         Rectangle(
             (0, 0),
             0.12,
-            0.85,
+            0.88,
             transform=ax.transAxes,
             color="steelblue",
             alpha=0.8,
         )
     )
     ax.add_patch(
-        Rectangle((0, 0.85), 1, 1, transform=ax.transAxes, color="steelblue", alpha=0.8)
+        Rectangle((0, 0.88), 1, 1, transform=ax.transAxes, color="steelblue", alpha=0.8)
     )
 
     # title
     fig.text(
         0.403,
-        0.808,
+        0.938,
         title,
         color="black",
         size=20,
         ha="center",
         va="center",
+        transform=ax.transAxes,
     )
     fig.text(
         0.4,
-        0.81,
+        0.94,
         title,
         color="white",
         size=20,
         ha="center",
         va="center",
+        transform=ax.transAxes,
     )
 
     # timestamps
@@ -183,24 +185,28 @@ def make_title(fig, ax, ds, title, offset=0):
         pd.Timestamp(ds.valid_time.values).tz_localize("UTC").tz_convert("America/Vancouver")
     )
     fmt_date = the_date.strftime("%a. %d %b. %y \n%H:%M %p %Z")
-    fig.text(0.603, 0.808, fmt_date, color="black", size=20, ha="center", va="center")
-    fig.text(0.6, 0.81, fmt_date, color="white", size=20, ha="center", va="center")
+    fig.text(0.703, 0.938, fmt_date, color="black", size=20, ha="center", va="center", transform=ax.transAxes,)
+    fig.text(0.7, 0.94, fmt_date, color="white", size=20, ha="center", va="center", transform=ax.transAxes,)
 
     # model run identifier in bottom left
     fig.text(
-        0.101 + offset,
-        0.149,
+        0.061,
+        0.014,
         f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
         color="black",
         size=12,
+        ha="center",
+        transform=ax.transAxes,
     )
 
     fig.text(
-        0.1 + offset,
-        0.15,
+        0.06,
+        0.015,
         f"{ds.model.upper()} {pd.Timestamp(ds.time.values).strftime("%H")} Z",
         color="white",
         size=12,
+        ha="center",
+        transform=ax.transAxes,
     )
 
     return None
