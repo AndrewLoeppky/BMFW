@@ -11,6 +11,6 @@
               "temp1516": "//Users//andrew//Repos//BMWF//outputs//Temperatures//1500m 1600//",
               "surf": "//Users//andrew//Repos//BMWF//outputs//Surface Maps//0-144 Hours//",
               "500mb": "//Users//andrew//Repos//BMWF//outputs//500 mbar & Precipitable Water//500 mbar//",
-              "pwat": "//Users//andrew//Repos//BMWF//outputs//500 mbar & Precipitable Water//Precipitable Water//"
+              "cwat": "//Users//andrew//Repos//BMWF//outputs//500 mbar & Precipitable Water//Cloud Water//"
         }
 }
