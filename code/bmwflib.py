@@ -75,11 +75,10 @@ def get_var(run, model, fxx, var, lev):
     return ds
 
 
-def make_figure():
+def make_figure(extent="MWF"):
     """
-    Generates a figure using cartopy. Requires
-    set_extent([lonmin, lonmax, latmin, latmax])
-    to keep figure size reasonable
+    Generates a figure using cartopy. Extent is default 
+    the wide MWF view. set to any key in map_extents.json.
     """
     fig = plt.figure(figsize=(15, 15))
     fig.tight_layout()
@@ -93,6 +92,23 @@ def make_figure():
             central_latitude=54.0,
         ),
     )
+    
+    # add a basemap
+    ax.add_feature(feature.LAND, color="#C3A97C")
+    ax.add_feature(feature.STATES)
+    ax.add_feature(feature.OCEAN, color="lightslategrey")
+    ax.add_feature(feature.COASTLINE)
+    ax.add_feature(feature.LAKES, color="lightslategrey")
+    ax.add_feature(feature.RIVERS, color="lightslategrey")
+    
+    # set the extent from map_extents.json
+    with open("../config/map_extents.json", "r") as f:
+        map_extents = json.load(f)
+    ax.set_extent(map_extents[extent], ccrs.PlateCarree())
+    
+    # lock the aspect ratio at 1:1
+    ext =  ax.get_extent()
+    ax.set_aspect(abs((ext[1] - ext[0]) / (ext[3] - ext[2])))
 
     return fig, ax
 
@@ -105,12 +121,13 @@ def plot_cities(ax):
         cities = pd.DataFrame.from_dict(
             json.load(f), orient="index", columns=["Latitude", "Longitude"]
         )
-
+        
     ax.scatter(
         x=cities.Longitude,
         y=cities.Latitude,
         color="yellow",
         edgecolor="black",
+        s=45,
         transform=ccrs.PlateCarree(),
     )
     for index, row in cities.iterrows():
