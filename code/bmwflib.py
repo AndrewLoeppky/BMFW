@@ -41,10 +41,126 @@ def clear_directory(path):
             os.remove(full_path)
     return None
 
-def find_pressure_centres(ds):
+
+def find_pressure_centres(pres, radius, delrad):
     """
-    placeholder function to find high and low pressure centres
+    Andrew's experimental function to locate and label pressure
+    centres.
+
+    inputs:
+    -------
+    pres: (np.array) the pressure field to operate on.
+
+    radius: (pixels)    the characteristic length scale of the centre.
+                     suggest 90pi for high pressure on GDPS data,
+                     50pi for low pressure on GDPS.
+    delrad: (pixels) step to take when searching past false centre
+                     candidates.
+                     suggest 50pi for high pressure GPDS,
+                     30pi for low pressure GDPS.
+    returns:
+    --------
+    centres (list of tuples) the pressure centres
     """
+    # fill lists with H and L coordinates (pixels)
+    centres = []
+
+    # get the aspect ratio
+    aspect = pres.shape[1] / pres.shape[0]
+
+    # get the index of the max value and save it
+    ymax, xmax = np.unravel_index(np.nanargmax(pres), pres.shape)
+    centres.append((int(xmax), int(ymax)))
+
+    # mask out all values within radius of the max
+    x = np.arange(0, np.shape(pres)[1])
+    y = np.arange(0, np.shape(pres)[0])
+    mask = ((x[np.newaxis, :] - xmax) / aspect) ** 2 + (
+        (y[:, np.newaxis] - ymax)
+    ) ** 2 < radius**2
+    pres[mask] = np.nan
+
+    n = 0  # number of centres marked
+    m = 0  # number of false centres located
+    while (n < 10) and (m < 2):
+        # get the index of the new max value
+        ymaxp, xmaxp = np.unravel_index(np.nanargmax(pres), pres.shape)
+
+        # check to see if the new max is on the border of the masked area (+ 5 pixels)
+        falseextrema = bool(
+            ((xmaxp - xmax) / aspect) ** 2 + ((ymax - ymax)) ** 2 < (radius + 5) ** 2
+        )
+
+        # if the new centre is next to the old one, ignore it, increase radius by
+        # delrad, and try again until a true centre is found
+        if falseextrema:
+            m += 1
+            mask = ((x[np.newaxis, :] - xmaxp) / aspect) ** 2 + (
+                (y[:, np.newaxis] - ymaxp)
+            ) ** 2 < (radius + delrad) ** 2
+            pres[mask] = np.nan
+            ymaxp, xmaxp = np.unravel_index(np.nanargmax(pres), pres.shape)
+
+        # once a true centre is found, save it and iterate n
+        centres.append((int(xmaxp), int(ymaxp)))
+        n += 1
+
+        # mask the new centre
+        mask = ((x[np.newaxis, :] - xmaxp) / aspect) ** 2 + (
+            (y[:, np.newaxis] - ymaxp)
+        ) ** 2 < radius**2
+        pres[mask] = np.nan
+
+        # reset the max indices
+        xmax = xmaxp
+        ymax = xmaxp
+
+    return centres
+
+
+def plot_pressure(da, ax, extent, radius=100, delrad=50, levels=range(900, 1100, 2)):
+    """
+    plots pressure contours, highs, lows on an existing axis
+
+    da (xarray dataarray (e.g. ds.prmsl)) the pressure field
+
+    ax (matplotlib axis) the axis on which to plot
+
+    extent (str) one of "MWF", "Alberta Rockies", "South Coast",
+                 "South Interior", "BC-AB"
+
+    levels (range) levels to contour plot
+    """
+    ht = ax.contour(
+        da.longitude,
+        da.latitude,
+        da,
+        colors="k",
+        transform=pc,
+        levels=levels,
+    )
+    ax.clabel(ht, inline=True, fontsize=9)
+
+    # find high and low pressures
+    highs = find_pressure_centres(np.array(da), radius, delrad)
+    lows = find_pressure_centres(np.array(da) * -1, radius/2, delrad/2)
+
+    # truncate pressure center to map extent and plot
+    with open("../config/map_extents.json", "r") as f:
+        map_extents = json.load(f)
+    ext = map_extents[extent]
+    for low in lows:
+        lat = da[low[1], low[0]].latitude
+        lon = da[low[1], low[0]].longitude
+        if (ext[0] < lon) & (lon < ext[1]) & (ext[2] < lat) & (lat < ext[3]):
+            ax.text(lon, lat, "L", size=40, transform=pc, ha="center", va="center")
+
+    for high in highs:
+        lat = da[high[1], high[0]].latitude
+        lon = da[high[1], high[0]].longitude
+        if (ext[0] < lon) & (lon < ext[1]) & (ext[2] < lat) & (lat < ext[3]):
+            ax.text(lon, lat, "H", size=40, transform=pc, ha="center", va="center")
+
     return None
 
 
