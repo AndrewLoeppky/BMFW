@@ -113,7 +113,7 @@ def make_figure(extent="MWF"):
     return fig, ax
 
 
-def plot_cities(ax):
+def plot_cities(ax, extent="MWF"):
     """
     plots and labels cities on map based on JSON file path input
     """
@@ -121,19 +121,31 @@ def plot_cities(ax):
         cities = pd.DataFrame.from_dict(
             json.load(f), orient="index", columns=["Latitude", "Longitude"]
         )
-        
+
+    # clip cities to map extent
+    with open("../config/map_extents.json", "r") as f:
+        map_extents = json.load(f)
+    ext = map_extents[extent]
+    cities = cities[
+        (ext[0] < cities.Longitude)
+        & (cities.Longitude < ext[1])
+        & (ext[2] < cities.Latitude)
+        & (cities.Latitude < ext[3])
+    ]
+
+    # do the plot
     ax.scatter(
         x=cities.Longitude,
         y=cities.Latitude,
         color="yellow",
         edgecolor="black",
-        s=45,
+        s=75,
         transform=ccrs.PlateCarree(),
     )
     for index, row in cities.iterrows():
         ax.text(
             row.Longitude,
-            row.Latitude + 0.1,
+            row.Latitude + 0.15,
             index,
             transform=ccrs.PlateCarree(),
             ha="center",
@@ -141,25 +153,10 @@ def plot_cities(ax):
             alpha=0.8,
             color="white",
             weight="light",
-            size=12
+            size=12,
         )
 
     return None
-
-
-def make_basemap(ax):
-    """
-    generates a basemap matching ACMWF style
-    """
-    ax.add_feature(feature.LAND, color="#C3A97C")
-    ax.add_feature(feature.STATES)
-    ax.add_feature(feature.OCEAN, color="lightslategrey")
-    ax.add_feature(feature.COASTLINE)
-    ax.add_feature(feature.LAKES, color="lightslategrey")
-    ax.add_feature(feature.RIVERS, color="lightslategrey")
-
-    return None
-
 
 def make_title(fig, ax, ds, title, offset=0):
     """
