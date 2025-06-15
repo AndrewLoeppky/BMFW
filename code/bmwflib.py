@@ -170,12 +170,12 @@ def make_title(fig, ax, ds, title, offset=0):
             0.12,
             0.88,
             transform=ax.transAxes,
-            color="steelblue",
+            color="slategray",
             alpha=0.8,
         )
     )
     ax.add_patch(
-        Rectangle((0, 0.88), 1, 1, transform=ax.transAxes, color="steelblue", alpha=0.8)
+        Rectangle((0, 0.88), 1, 1, transform=ax.transAxes, color="slategray", alpha=0.8)
     )
 
     # title
