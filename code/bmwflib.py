@@ -82,43 +82,46 @@ def find_pressure_centres(pres, radius, delrad):
 
     n = 0  # number of centres marked
     m = 0  # number of false centres located
-    while (n < 10) and (m < 2):
+    while (n < 4) and (m < 2):
         # get the index of the new max value
-        ymaxp, xmaxp = np.unravel_index(np.nanargmax(pres), pres.shape)
+        try:
+            ymaxp, xmaxp = np.unravel_index(np.nanargmax(pres), pres.shape)
+        
+            # check to see if the new max is on the border of the masked area (+ 10 pixels)
+            falseextrema = bool(
+                ((xmaxp - xmax) / aspect) ** 2 + ((ymax - ymax)) ** 2 < (radius + 10) ** 2
+            )
 
-        # check to see if the new max is on the border of the masked area (+ 5 pixels)
-        falseextrema = bool(
-            ((xmaxp - xmax) / aspect) ** 2 + ((ymax - ymax)) ** 2 < (radius + 5) ** 2
-        )
+            # if the new centre is next to the old one, ignore it, increase radius by
+            # delrad, and try again until a true centre is found
+            if falseextrema:
+                m += 1
+                mask = ((x[np.newaxis, :] - xmaxp) / aspect) ** 2 + (
+                    (y[:, np.newaxis] - ymaxp)
+                ) ** 2 < (radius + delrad) ** 2
+                pres[mask] = np.nan
+                ymaxp, xmaxp = np.unravel_index(np.nanargmax(pres), pres.shape)
 
-        # if the new centre is next to the old one, ignore it, increase radius by
-        # delrad, and try again until a true centre is found
-        if falseextrema:
-            m += 1
+            # once a true centre is found, save it and iterate n
+            centres.append((int(xmaxp), int(ymaxp)))
+            n += 1
+
+            # mask the new centre
             mask = ((x[np.newaxis, :] - xmaxp) / aspect) ** 2 + (
                 (y[:, np.newaxis] - ymaxp)
-            ) ** 2 < (radius + delrad) ** 2
+            ) ** 2 < radius**2
             pres[mask] = np.nan
-            ymaxp, xmaxp = np.unravel_index(np.nanargmax(pres), pres.shape)
 
-        # once a true centre is found, save it and iterate n
-        centres.append((int(xmaxp), int(ymaxp)))
-        n += 1
-
-        # mask the new centre
-        mask = ((x[np.newaxis, :] - xmaxp) / aspect) ** 2 + (
-            (y[:, np.newaxis] - ymaxp)
-        ) ** 2 < radius**2
-        pres[mask] = np.nan
-
-        # reset the max indices
-        xmax = xmaxp
-        ymax = xmaxp
+            # reset the max indices
+            xmax = xmaxp
+            ymax = xmaxp
+        except ValueError:
+            break
 
     return centres
 
 
-def plot_pressure(da, ax, extent, radius=100, delrad=50, levels=range(900, 1100, 2)):
+def plot_pressure(da, ax, extent, radius=100, delrad=50, levels=range(900, 1100, 4)):
     """
     plots pressure contours, highs, lows on an existing axis
 
@@ -143,7 +146,7 @@ def plot_pressure(da, ax, extent, radius=100, delrad=50, levels=range(900, 1100,
 
     # find high and low pressures
     highs = find_pressure_centres(np.array(da), radius, delrad)
-    lows = find_pressure_centres(np.array(da) * -1, radius/2, delrad/2)
+    lows = find_pressure_centres(np.array(da) * -1, radius/1.2, delrad/1.2)
 
     # truncate pressure center to map extent and plot
     with open("../config/map_extents.json", "r") as f:
