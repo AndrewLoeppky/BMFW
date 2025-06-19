@@ -9,6 +9,7 @@
               "wind_surf": "//Users//andrew//Repos//BMWF//outputs//Winds//Surface R//",
               "wind_1500m": "//Users//andrew//Repos//BMWF//outputs//Winds//1500m//",
               "wind_2500m": "//Users//andrew//Repos//BMWF//outputs//Winds//2500m//",
-              "surf": "//Users//andrew//Repos//BMWF//outputs//Surface Maps//0-48 Hours//"         
+              "surf": "//Users//andrew//Repos//BMWF//outputs//Surface Maps//0-48 Hours//",
+              "frzlvl":"//Users//andrew//Repos//BMWF//outputs//Temperatures//Freezing Level R//"
         }
 }
